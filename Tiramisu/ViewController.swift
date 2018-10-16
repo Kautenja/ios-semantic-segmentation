@@ -12,6 +12,8 @@ import Vision
 
 /// A view controller to pass camera inputs through a vision model
 class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
+    
+    var time = Date()
 
     /// the view to preview raw RGB data from the camera
     @IBOutlet weak var preview: UIView!
@@ -71,8 +73,11 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
                 // update the image on the UI thread
                 DispatchQueue.main.async {
                     self.segmentation.image = image
+                    print(-1 / self.time.timeIntervalSinceNow)
+                    self.time = Date()
                 }
             }
+            _request?.imageCropAndScaleOption = .scaleFit
             return _request
         }
     }

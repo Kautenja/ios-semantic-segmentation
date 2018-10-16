@@ -35,7 +35,7 @@ func probsToImage(_ _probs: MLMultiArray) -> UIImage? {
     let height = probs.shape[1]
     let width = probs.shape[2]
     // initialize some bytes to store the image in
-    var bytes = [UInt8](repeating: 0, count: height * width * 4)
+    var bytes = [UInt8](repeating: 255, count: height * width * 4)
     // iterate over the pixels in the output probs
     for h in 0 ..< height {
         for w in 0 ..< width {
@@ -58,7 +58,6 @@ func probsToImage(_ _probs: MLMultiArray) -> UIImage? {
             bytes[offset + 0] = UInt8(rgb![0])
             bytes[offset + 1] = UInt8(rgb![1])
             bytes[offset + 2] = UInt8(rgb![2])
-            bytes[offset + 3] = 255
         }
     }
     // create a UIImage from the byte array
