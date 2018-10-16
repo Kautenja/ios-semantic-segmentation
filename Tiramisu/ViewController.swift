@@ -36,7 +36,8 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
             do {
                 _model = try VNCoreMLModel(for: Tiramisu45().model)
             } catch let error {
-                print("failed to load model: \(error.localizedDescription)")
+                let message = "failed to load model: \(error.localizedDescription)"
+                popup_alert(self, title: "Model Error", message: message)
             }
             return _model
         }
@@ -76,6 +77,12 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         }
     }
     
+    /// Respond to a memory warning from the OS
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        popup_alert(self, title: "Memory Warning", message: "received memory warning")
+    }
+    
     /// Handle the view appearing
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -84,8 +91,8 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         captureSession.sessionPreset = .medium
         // get a handle on the back camera
         guard let camera = AVCaptureDevice.default(for: AVMediaType.video) else {
-            // TODO: handle better
-            print("Unable to access back camera!")
+            let message = "Unable to access the back camera!"
+            popup_alert(self, title: "Camera Error", message: message)
             return
         }
         // create an input device from the back camera and handle
@@ -103,8 +110,8 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
             }
         }
         catch let error  {
-            // TODO: handle better
-            print("Error Unable to initialize back camera:  \(error.localizedDescription)")
+            let message = "failed to intialize camera: \(error.localizedDescription)"
+            popup_alert(self, title: "Camera Error", message: message)
             return
         }
     }
@@ -130,22 +137,22 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         }
     }
     
-    /// Handle a frame from the camera video stream 
+    /// Handle a frame from the camera video stream
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         // create a Core Video pixel buffer which is an image buffer that holds pixels in main memory
         // Applications generating frames, compressing or decompressing video, or using Core Image
         // can all make use of Core Video pixel buffers
         guard let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
-            // TODO: handle better
-            print("failed to create pixel buffer from video input")
+            let message = "failed to create pixel buffer from video input"
+            popup_alert(self, title: "Inference Error", message: message)
             return
         }
         // execute the request
         do {
             try VNImageRequestHandler(cvPixelBuffer: pixelBuffer, options: [:]).perform([request])
         } catch let error {
-            // TODO: handle better
-            print("failed to handle CoreML request: \(error.localizedDescription)")
+            let message = "failed to perform inference: \(error.localizedDescription)"
+            popup_alert(self, title: "Inference Error", message: message)
         }
     }
     
