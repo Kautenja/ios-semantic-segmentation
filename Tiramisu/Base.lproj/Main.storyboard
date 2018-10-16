@@ -31,6 +31,21 @@
                                     <constraint firstAttribute="width" secondItem="2cb-1l-B5D" secondAttribute="height" multiplier="480:352" id="KiW-Y1-qau"/>
                                 </constraints>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Model Framerate:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VaK-VT-xRi">
+                                <rect key="frame" x="10" y="344" width="140" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="140" id="1fq-bo-re8"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gnK-YT-bMb">
+                                <rect key="frame" x="155" y="344" width="502" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -38,15 +53,21 @@
                             <constraint firstItem="T3R-K1-S4V" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="9ZI-Y0-NsC"/>
                             <constraint firstItem="T3R-K1-S4V" firstAttribute="height" secondItem="2cb-1l-B5D" secondAttribute="height" id="CCb-B5-OIo"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="T3R-K1-S4V" secondAttribute="bottom" constant="10" id="JbS-T0-gWG"/>
+                            <constraint firstItem="VaK-VT-xRi" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="KTX-VH-kTi"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="gnK-YT-bMb" secondAttribute="trailing" constant="10" id="LUi-D1-GER"/>
+                            <constraint firstItem="gnK-YT-bMb" firstAttribute="leading" secondItem="VaK-VT-xRi" secondAttribute="trailing" constant="5" id="LxS-tH-RhY"/>
                             <constraint firstItem="2cb-1l-B5D" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="MZ8-Jf-c1P"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="gnK-YT-bMb" secondAttribute="bottom" constant="10" id="QBa-52-chh"/>
                             <constraint firstItem="T3R-K1-S4V" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="YPT-pn-yyP"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="2cb-1l-B5D" secondAttribute="trailing" id="a9H-et-HBY"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="2cb-1l-B5D" secondAttribute="bottom" constant="10" id="bBo-cS-Zbn"/>
                             <constraint firstItem="2cb-1l-B5D" firstAttribute="leading" secondItem="T3R-K1-S4V" secondAttribute="trailing" id="ktO-fd-WIN"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="VaK-VT-xRi" secondAttribute="bottom" constant="10" id="xc8-k0-l70"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="framerate" destination="gnK-YT-bMb" id="cs3-TC-AFg"/>
                         <outlet property="preview" destination="T3R-K1-S4V" id="Yxl-3T-VGh"/>
                         <outlet property="segmentation" destination="2cb-1l-B5D" id="GHD-Vm-BCs"/>
                     </connections>

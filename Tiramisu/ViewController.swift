@@ -13,13 +13,16 @@ import Vision
 /// A view controller to pass camera inputs through a vision model
 class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
     
+    /// a local reference to time to update the framerate
     var time = Date()
 
     /// the view to preview raw RGB data from the camera
     @IBOutlet weak var preview: UIView!
     /// the view for showing the segmentation
     @IBOutlet weak var segmentation: UIImageView!
-
+    /// a label to show the framerate of the model
+    @IBOutlet weak var framerate: UILabel!
+    
     /// the camera session for streaming data from the camera
     var captureSession: AVCaptureSession!
     /// the video preview layer
@@ -73,13 +76,14 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
                 // update the image on the UI thread
                 DispatchQueue.main.async {
                     self.segmentation.image = image
-//                    print(-1 / self.time.timeIntervalSinceNow)
-//                    self.time = Date()
+                    let fps = -1 / self.time.timeIntervalSinceNow
+                    self.time = Date()
+                    self.framerate.text = "\(fps)"
                 }
             }
             // set the input image size to be a scaled version
             // of the image
-            _request?.imageCropAndScaleOption = .centerCrop
+            _request?.imageCropAndScaleOption = .scaleFill
             return _request
         }
     }
