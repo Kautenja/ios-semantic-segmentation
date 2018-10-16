@@ -15,7 +15,6 @@
 		0945E4172175811C00B2AB60 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0945E40F2175811C00B2AB60 /* Math.swift */; };
 		0945E4182175811C00B2AB60 /* UIImage+CVPixelBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0945E4102175811C00B2AB60 /* UIImage+CVPixelBuffer.swift */; };
 		0945E4192175811C00B2AB60 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0945E4112175811C00B2AB60 /* Array.swift */; };
-		0945E41A2175811C00B2AB60 /* Predictions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0945E4122175811C00B2AB60 /* Predictions.swift */; };
 		0945E41B2175811C00B2AB60 /* MultiArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0945E4132175811C00B2AB60 /* MultiArray.swift */; };
 		0945E41C2175811C00B2AB60 /* CVPixelBuffer+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0945E4142175811C00B2AB60 /* CVPixelBuffer+Helpers.swift */; };
 		0945E41D2175811C00B2AB60 /* NonMaxSuppression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0945E4152175811C00B2AB60 /* NonMaxSuppression.swift */; };
@@ -34,7 +33,6 @@
 		0945E40F2175811C00B2AB60 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		0945E4102175811C00B2AB60 /* UIImage+CVPixelBuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+CVPixelBuffer.swift"; sourceTree = "<group>"; };
 		0945E4112175811C00B2AB60 /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
-		0945E4122175811C00B2AB60 /* Predictions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Predictions.swift; sourceTree = "<group>"; };
 		0945E4132175811C00B2AB60 /* MultiArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiArray.swift; sourceTree = "<group>"; };
 		0945E4142175811C00B2AB60 /* CVPixelBuffer+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CVPixelBuffer+Helpers.swift"; sourceTree = "<group>"; };
 		0945E4152175811C00B2AB60 /* NonMaxSuppression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonMaxSuppression.swift; sourceTree = "<group>"; };
@@ -98,7 +96,6 @@
 				0945E40F2175811C00B2AB60 /* Math.swift */,
 				0945E4102175811C00B2AB60 /* UIImage+CVPixelBuffer.swift */,
 				0945E4112175811C00B2AB60 /* Array.swift */,
-				0945E4122175811C00B2AB60 /* Predictions.swift */,
 				0945E4132175811C00B2AB60 /* MultiArray.swift */,
 				0945E4142175811C00B2AB60 /* CVPixelBuffer+Helpers.swift */,
 				0945E4152175811C00B2AB60 /* NonMaxSuppression.swift */,
@@ -179,7 +176,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0945E3AC21755E6300B2AB60 /* ViewController.swift in Sources */,
-				0945E41A2175811C00B2AB60 /* Predictions.swift in Sources */,
 				0945E4182175811C00B2AB60 /* UIImage+CVPixelBuffer.swift in Sources */,
 				0945E4192175811C00B2AB60 /* Array.swift in Sources */,
 				0945E41B2175811C00B2AB60 /* MultiArray.swift in Sources */,
