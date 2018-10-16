@@ -73,8 +73,8 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
                 // update the image on the UI thread
                 DispatchQueue.main.async {
                     self.segmentation.image = image
-                    print(-1 / self.time.timeIntervalSinceNow)
-                    self.time = Date()
+//                    print(-1 / self.time.timeIntervalSinceNow)
+//                    self.time = Date()
                 }
             }
             // set the input image size to be a scaled version
