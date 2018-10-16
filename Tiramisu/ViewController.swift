@@ -20,23 +20,62 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
 
     /// the camera session for streaming data from the camera
     var captureSession: AVCaptureSession!
-    /// the output from the video
-    var videoOutput: AVCaptureVideoDataOutput!
     /// the video preview layer
     var videoPreviewLayer: AVCaptureVideoPreviewLayer!
 
     /// the model for the view controller to apss camera data through
-    var model: VNCoreMLModel!
-
-    /// Handle a callback from the view loading
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        if model == nil {
-            // TODO: handle with a try fail block
-            model = try! VNCoreMLModel(for: Tiramisu45().model)
+    private var _model: VNCoreMLModel?
+    /// the model for the view controller to apss camera data through
+    var model: VNCoreMLModel! {
+        get {
+            // try to unwrap the private model instance
+            if let model = _model {
+                return model
+            }
+            // try to create a new model and fail gracefully
+            do {
+                _model = try VNCoreMLModel(for: Tiramisu45().model)
+            } catch let error {
+                print("failed to load model: \(error.localizedDescription)")
+            }
+            return _model
         }
     }
-
+    
+    /// the request and handler for the model
+    private var _request: VNCoreMLRequest?
+    /// the request and handler for the model
+    var request: VNCoreMLRequest! {
+        get {
+            // try to unwrap the private request instance
+            if let request = _request {
+                return request
+            }
+            // create the request
+            _request = VNCoreMLRequest(model: model) { (finishedRequest, error) in
+                // handle an error from the inference engine
+                if let error = error {
+                    print("inference error: \(error.localizedDescription)")
+                    return
+                }
+                // get the outputs from the model
+                let outputs = finishedRequest.results as? [VNCoreMLFeatureValueObservation]
+                // get the probabilities as the first output of the model
+                guard let probs = outputs?[0].featureValue.multiArrayValue else {
+                    print("failed to extract output from model")
+                    return
+                }
+                // unmap the discrete segmentation to RGB pixels
+                let image = probsToImage(probs)
+                // update the image on the UI thread
+                DispatchQueue.main.async {
+                    self.segmentation.image = image
+                }
+            }
+            return _request
+        }
+    }
+    
     /// Handle the view appearing
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -44,24 +83,23 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         captureSession = AVCaptureSession()
         captureSession.sessionPreset = .medium
         // get a handle on the back camera
-        guard let camera = AVCaptureDevice.default(for: AVMediaType.video)
-            else {
-                // TODO: handle better
-                print("Unable to access back camera!")
-                return
+        guard let camera = AVCaptureDevice.default(for: AVMediaType.video) else {
+            // TODO: handle better
+            print("Unable to access back camera!")
+            return
         }
         // create an input device from the back camera and handle
         // any errors (i.e., privacy request denied)
         do {
             // setup the camera input and video output
             let input = try AVCaptureDeviceInput(device: camera)
-            videoOutput = AVCaptureVideoDataOutput()
+            let videoOutput = AVCaptureVideoDataOutput()
             videoOutput.setSampleBufferDelegate(self, queue: DispatchQueue(label: "videoQueue"))
             // add the inputs and ouptuts to the sessionr and start the preview
             if captureSession.canAddInput(input) && captureSession.canAddOutput(videoOutput) {
                 captureSession.addInput(input)
                 captureSession.addOutput(videoOutput)
-                setupLivePreview()
+                setupCameraPreview()
             }
         }
         catch let error  {
@@ -71,8 +109,8 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         }
     }
 
-    /// Setup the Live preview from the camera
-    func setupLivePreview() {
+    /// Setup the live preview from the camera
+    func setupCameraPreview() {
         // create a video preview layer for the view controller
         videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         // set the metadata of the video preview
@@ -93,35 +131,21 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     }
     
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        // run an inference with CoreML
-        let request = VNCoreMLRequest(model: model) { (finishedRequest, error) in
-            // handle an error from the inference engine
-            if let _ = error {
-                print("inference error")
-                return
-            }
-            // get the inference results
-            guard let outputs = finishedRequest.results as? [VNCoreMLFeatureValueObservation] else {
-                print("failed to get inference results")
-                return
-            }
-            // get the multi array from the outputs of the model
-            guard let multiArray = outputs[0].featureValue.multiArrayValue else {
-                print("failed to cast inference to expected type")
-                return
-            }
-            // unmap the discrete segmentation to RGB pixels
-            let image = probsToImage(multiArray)
-            DispatchQueue.main.async {
-                self.segmentation.image = image
-            }
-        }
         // create a Core Video pixel buffer which is an image buffer that holds pixels in main memory
         // Applications generating frames, compressing or decompressing video, or using Core Image
         // can all make use of Core Video pixel buffers
-        guard let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
+        guard let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
+            // TODO: handle better
+            print("failed to create pixel buffer from video input")
+            return
+        }
         // execute the request
-        try? VNImageRequestHandler(cvPixelBuffer: pixelBuffer, options: [:]).perform([request])
+        do {
+            try VNImageRequestHandler(cvPixelBuffer: pixelBuffer, options: [:]).perform([request])
+        } catch let error {
+            // TODO: handle better
+            print("failed to handle CoreML request: \(error.localizedDescription)")
+        }
     }
     
 }
