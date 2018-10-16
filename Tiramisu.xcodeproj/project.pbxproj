@@ -15,7 +15,7 @@
 		0945E4172175811C00B2AB60 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0945E40F2175811C00B2AB60 /* Math.swift */; };
 		0945E4182175811C00B2AB60 /* UIImage+CVPixelBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0945E4102175811C00B2AB60 /* UIImage+CVPixelBuffer.swift */; };
 		0945E41B2175811C00B2AB60 /* MultiArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0945E4132175811C00B2AB60 /* MultiArray.swift */; };
-		0945E42C21759A4500B2AB60 /* Tiramisu45.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 0945E42B21759A4500B2AB60 /* Tiramisu45.mlmodel */; };
+		09A102052176932300220459 /* Tiramisu45.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 09A102042176932300220459 /* Tiramisu45.mlmodel */; };
 		09DC0B562175B4090044D811 /* Probs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09DC0B552175B4090044D811 /* Probs.swift */; };
 		09DC0B592175B5690044D811 /* Popup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09DC0B582175B5690044D811 /* Popup.swift */; };
 /* End PBXBuildFile section */
@@ -31,7 +31,7 @@
 		0945E40F2175811C00B2AB60 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		0945E4102175811C00B2AB60 /* UIImage+CVPixelBuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+CVPixelBuffer.swift"; sourceTree = "<group>"; };
 		0945E4132175811C00B2AB60 /* MultiArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiArray.swift; sourceTree = "<group>"; };
-		0945E42B21759A4500B2AB60 /* Tiramisu45.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = Tiramisu45.mlmodel; sourceTree = "<group>"; };
+		09A102042176932300220459 /* Tiramisu45.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = Tiramisu45.mlmodel; sourceTree = "<group>"; };
 		09DC0B552175B4090044D811 /* Probs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Probs.swift; sourceTree = "<group>"; };
 		09DC0B582175B5690044D811 /* Popup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Popup.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -82,7 +82,7 @@
 		0945E3BB21755EF500B2AB60 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				0945E42B21759A4500B2AB60 /* Tiramisu45.mlmodel */,
+				09A102042176932300220459 /* Tiramisu45.mlmodel */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -178,10 +178,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				0945E3AC21755E6300B2AB60 /* ViewController.swift in Sources */,
+				09A102052176932300220459 /* Tiramisu45.mlmodel in Sources */,
 				0945E4182175811C00B2AB60 /* UIImage+CVPixelBuffer.swift in Sources */,
 				09DC0B592175B5690044D811 /* Popup.swift in Sources */,
 				0945E41B2175811C00B2AB60 /* MultiArray.swift in Sources */,
-				0945E42C21759A4500B2AB60 /* Tiramisu45.mlmodel in Sources */,
 				09DC0B562175B4090044D811 /* Probs.swift in Sources */,
 				0945E3AA21755E6300B2AB60 /* AppDelegate.swift in Sources */,
 				0945E4172175811C00B2AB60 /* Math.swift in Sources */,

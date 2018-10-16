@@ -77,7 +77,9 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
                     self.time = Date()
                 }
             }
-            _request?.imageCropAndScaleOption = .scaleFit
+            // set the input image size to be a scaled version
+            // of the image
+            _request?.imageCropAndScaleOption = .centerCrop
             return _request
         }
     }
@@ -93,7 +95,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         super.viewDidAppear(animated)
         // setup the AV session
         captureSession = AVCaptureSession()
-        captureSession.sessionPreset = .medium
+        captureSession.sessionPreset = .hd1280x720
         // get a handle on the back camera
         guard let camera = AVCaptureDevice.default(for: AVMediaType.video) else {
             let message = "Unable to access the back camera!"
