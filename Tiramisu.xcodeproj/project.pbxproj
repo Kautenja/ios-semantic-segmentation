@@ -14,11 +14,7 @@
 		0945E3B421755E6400B2AB60 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0945E3B221755E6400B2AB60 /* LaunchScreen.storyboard */; };
 		0945E4172175811C00B2AB60 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0945E40F2175811C00B2AB60 /* Math.swift */; };
 		0945E4182175811C00B2AB60 /* UIImage+CVPixelBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0945E4102175811C00B2AB60 /* UIImage+CVPixelBuffer.swift */; };
-		0945E4192175811C00B2AB60 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0945E4112175811C00B2AB60 /* Array.swift */; };
 		0945E41B2175811C00B2AB60 /* MultiArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0945E4132175811C00B2AB60 /* MultiArray.swift */; };
-		0945E41C2175811C00B2AB60 /* CVPixelBuffer+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0945E4142175811C00B2AB60 /* CVPixelBuffer+Helpers.swift */; };
-		0945E41D2175811C00B2AB60 /* NonMaxSuppression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0945E4152175811C00B2AB60 /* NonMaxSuppression.swift */; };
-		0945E41E2175811C00B2AB60 /* MLMultiArray+Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0945E4162175811C00B2AB60 /* MLMultiArray+Image.swift */; };
 		0945E42C21759A4500B2AB60 /* Tiramisu45.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 0945E42B21759A4500B2AB60 /* Tiramisu45.mlmodel */; };
 /* End PBXBuildFile section */
 
@@ -32,11 +28,7 @@
 		0945E3B521755E6400B2AB60 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0945E40F2175811C00B2AB60 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		0945E4102175811C00B2AB60 /* UIImage+CVPixelBuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+CVPixelBuffer.swift"; sourceTree = "<group>"; };
-		0945E4112175811C00B2AB60 /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		0945E4132175811C00B2AB60 /* MultiArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiArray.swift; sourceTree = "<group>"; };
-		0945E4142175811C00B2AB60 /* CVPixelBuffer+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CVPixelBuffer+Helpers.swift"; sourceTree = "<group>"; };
-		0945E4152175811C00B2AB60 /* NonMaxSuppression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonMaxSuppression.swift; sourceTree = "<group>"; };
-		0945E4162175811C00B2AB60 /* MLMultiArray+Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MLMultiArray+Image.swift"; sourceTree = "<group>"; };
 		0945E42B21759A4500B2AB60 /* Tiramisu45.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = Tiramisu45.mlmodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -95,11 +87,7 @@
 			children = (
 				0945E40F2175811C00B2AB60 /* Math.swift */,
 				0945E4102175811C00B2AB60 /* UIImage+CVPixelBuffer.swift */,
-				0945E4112175811C00B2AB60 /* Array.swift */,
 				0945E4132175811C00B2AB60 /* MultiArray.swift */,
-				0945E4142175811C00B2AB60 /* CVPixelBuffer+Helpers.swift */,
-				0945E4152175811C00B2AB60 /* NonMaxSuppression.swift */,
-				0945E4162175811C00B2AB60 /* MLMultiArray+Image.swift */,
 			);
 			path = CoreMLHelpers;
 			sourceTree = "<group>";
@@ -177,13 +165,9 @@
 			files = (
 				0945E3AC21755E6300B2AB60 /* ViewController.swift in Sources */,
 				0945E4182175811C00B2AB60 /* UIImage+CVPixelBuffer.swift in Sources */,
-				0945E4192175811C00B2AB60 /* Array.swift in Sources */,
 				0945E41B2175811C00B2AB60 /* MultiArray.swift in Sources */,
-				0945E41C2175811C00B2AB60 /* CVPixelBuffer+Helpers.swift in Sources */,
 				0945E42C21759A4500B2AB60 /* Tiramisu45.mlmodel in Sources */,
 				0945E3AA21755E6300B2AB60 /* AppDelegate.swift in Sources */,
-				0945E41E2175811C00B2AB60 /* MLMultiArray+Image.swift in Sources */,
-				0945E41D2175811C00B2AB60 /* NonMaxSuppression.swift in Sources */,
 				0945E4172175811C00B2AB60 /* Math.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
