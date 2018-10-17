@@ -29,7 +29,7 @@ func probsToImage(_ _probs: MLMultiArray) -> UIImage? {
         11: [0, 0, 0]
     ]
     // convert the MLMultiArray to a MultiArray
-    var probs = MultiArray<Double>(_probs)
+    var probs = MultiArray<Float32>(_probs)
     // get the shape information from the probs
     let classes = probs.shape[0]
     let height = probs.shape[1]
@@ -40,13 +40,13 @@ func probsToImage(_ _probs: MLMultiArray) -> UIImage? {
     for h in 0 ..< height {
         for w in 0 ..< width {
             // store the highest probability and the corresponding class
-            var max_prob: Double = 0
-            var max_c: Int = 0
+            var max_prob = 0.0
+            var max_c = 0
             // iterate over class labels to extract the highest probability
             for c in 0 ..< classes {
                 // replace the highest prob and index if this prob is greater
-                if probs[c, h, w] > max_prob {
-                    max_prob = probs[c, h, w]
+                if Double(probs[c, h, w]) > max_prob {
+                    max_prob = Double(probs[c, h, w])
                     max_c = c
                 }
             }
