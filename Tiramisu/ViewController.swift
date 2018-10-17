@@ -129,23 +129,24 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
                 
                 // add a callback to handle the buffer's completion and commit the buffer
                 buffer?.addCompletedHandler({ (_buffer) in
-                    let argmax = try! MLMultiArray(shape: [12, softmax.shape[1], softmax.shape[2]], dataType: .float32)
+                    let argmax = try! MLMultiArray(shape: [1, softmax.shape[1], softmax.shape[2]], dataType: .float32)
                     classes.readBytes(argmax.dataPointer,
                                       dataLayout: .featureChannelsxHeightxWidth,
                                       imageIndex: 0)
-                    print(MultiArray<Float32>(argmax)[0, 5, 5])
+    
+                    // unmap the discrete segmentation to RGB pixels
+                    let image = codesToImage(argmax)
+                    // update the image on the UI thread
+                    DispatchQueue.main.async {
+                        self.segmentation.image = image
+                        let fps = -1 / self.time.timeIntervalSinceNow
+                        self.time = Date()
+                        self.framerate.text = "\(fps)"
+                    }
+                    
                 })
                 buffer?.commit()
-                
-//                // unmap the discrete segmentation to RGB pixels
-//                let image = probsToImage(softmax)
-//                // update the image on the UI thread
-                DispatchQueue.main.async {
-//                    self.segmentation.image = image
-                    let fps = -1 / self.time.timeIntervalSinceNow
-                    self.time = Date()
-                    self.framerate.text = "\(fps)"
-                }
+
             }
             // set the input image size to be a scaled version
             // of the image
