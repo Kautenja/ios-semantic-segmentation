@@ -9,12 +9,16 @@
 import UIKit
 import AVFoundation
 import Vision
+import Metal
+import MetalPerformanceShaders
 
 /// A view controller to pass camera inputs through a vision model
 class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
     
     /// a local reference to time to update the framerate
     var time = Date()
+    
+    var ready: Bool = true
 
     /// the view to preview raw RGB data from the camera
     @IBOutlet weak var preview: UIView!
@@ -27,6 +31,33 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     var captureSession: AVCaptureSession!
     /// the video preview layer
     var videoPreviewLayer: AVCaptureVideoPreviewLayer!
+    
+    /// TODO:
+    private var _device: MTLDevice?
+    /// TODO:
+    var device: MTLDevice! {
+        get {
+            // try to unwrap the private device instance
+            if let device = _device {
+                return device
+            }
+            _device = MTLCreateSystemDefaultDevice()
+            return _device
+        }
+    }
+    
+    var _queue: MTLCommandQueue?
+    
+    var queue: MTLCommandQueue! {
+        get {
+            // try to unwrap the private queue instance
+            if let queue = _queue {
+                return queue
+            }
+            _queue = device.makeCommandQueue()
+            return _queue
+        }
+    }
 
     /// the model for the view controller to apss camera data through
     private var _model: VNCoreMLModel?
@@ -64,22 +95,63 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
                     print("inference error: \(error.localizedDescription)")
                     return
                 }
+                // make sure the UI is ready for another frame
+                guard self.ready else { return }
                 // get the outputs from the model
                 let outputs = finishedRequest.results as? [VNCoreMLFeatureValueObservation]
                 // get the probabilities as the first output of the model
-                guard let probs = outputs?[0].featureValue.multiArrayValue else {
+                guard let softmax = outputs?[0].featureValue.multiArrayValue else {
                     print("failed to extract output from model")
                     return
                 }
-                // unmap the discrete segmentation to RGB pixels
-                let image = probsToImage(probs)
-                // update the image on the UI thread
-                DispatchQueue.main.async {
-                    self.segmentation.image = image
-                    let fps = -1 / self.time.timeIntervalSinceNow
-                    self.time = Date()
-                    self.framerate.text = "\(fps)"
-                }
+                // get the dimensions of the probability tensor
+                let channels = softmax.shape[0].intValue
+                let height = softmax.shape[1].intValue
+                let width = softmax.shape[2].intValue
+                                
+                // create an image for the softmax outputs
+                let desc = MPSImageDescriptor(channelFormat: .float32,
+                                              width: width,
+                                              height: height,
+                                              featureChannels: channels)
+                let probs = MPSImage(device: self.device, imageDescriptor: desc)
+                probs.writeBytes(softmax.dataPointer,
+                                 dataLayout: .featureChannelsxHeightxWidth,
+                                 imageIndex: 0)
+                
+                // create an output image for the Arg Max output
+                let desc1 = MPSImageDescriptor(channelFormat: .float32,
+                                               width: width,
+                                               height: height,
+                                               featureChannels: 1)
+                let classes = MPSImage(device: self.device, imageDescriptor: desc1)
+
+                // create a buffer and pass the inputs through the filter to the outputs
+                let buffer = self.queue.makeCommandBuffer()
+                let filter = MPSNNReduceFeatureChannelsArgumentMax(device: self.device)
+                filter.encode(commandBuffer: buffer!, sourceImage: probs, destinationImage: classes)
+                
+                // add a callback to handle the buffer's completion and commit the buffer
+                buffer?.addCompletedHandler({ (_buffer) in
+                    let argmax = try! MLMultiArray(shape: [1, softmax.shape[1], softmax.shape[2]], dataType: .float32)
+                    classes.readBytes(argmax.dataPointer,
+                                      dataLayout: .featureChannelsxHeightxWidth,
+                                      imageIndex: 0)
+    
+                    // unmap the discrete segmentation to RGB pixels
+                    let image = codesToImage(argmax)
+                    // update the image on the UI thread
+                    DispatchQueue.main.async {
+                        self.segmentation.image = image
+                        let fps = -1 / self.time.timeIntervalSinceNow
+                        self.time = Date()
+                        self.framerate.text = "\(fps)"
+                    }
+                    self.ready = true
+                })
+                self.ready = false
+                buffer?.commit()
+
             }
             // set the input image size to be a scaled version
             // of the image
