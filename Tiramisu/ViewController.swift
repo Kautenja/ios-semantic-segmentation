@@ -17,6 +17,8 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     
     /// a local reference to time to update the framerate
     var time = Date()
+    
+    var ready: Bool = true
 
     /// the view to preview raw RGB data from the camera
     @IBOutlet weak var preview: UIView!
@@ -93,6 +95,8 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
                     print("inference error: \(error.localizedDescription)")
                     return
                 }
+                // make sure the UI is ready for another frame
+                guard self.ready else { return }
                 // get the outputs from the model
                 let outputs = finishedRequest.results as? [VNCoreMLFeatureValueObservation]
                 // get the probabilities as the first output of the model
@@ -143,8 +147,9 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
                         self.time = Date()
                         self.framerate.text = "\(fps)"
                     }
-                    
+                    self.ready = true
                 })
+                self.ready = false
                 buffer?.commit()
 
             }
