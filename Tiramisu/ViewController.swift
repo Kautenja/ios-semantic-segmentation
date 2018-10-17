@@ -9,6 +9,8 @@
 import UIKit
 import AVFoundation
 import Vision
+import Metal
+import MetalPerformanceShaders
 
 /// A view controller to pass camera inputs through a vision model
 class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
@@ -27,6 +29,21 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     var captureSession: AVCaptureSession!
     /// the video preview layer
     var videoPreviewLayer: AVCaptureVideoPreviewLayer!
+    
+    /// TODO:
+    private var _device: MTLDevice?
+    /// TODO:
+    var device: MTLDevice! {
+        get {
+            // try to unwrap the private model instance
+            if let device = _device {
+                return device
+            }
+            // try to create a new model and fail gracefully
+            _device = MTLCreateSystemDefaultDevice()
+            return _device
+        }
+    }
 
     /// the model for the view controller to apss camera data through
     private var _model: VNCoreMLModel?
@@ -71,8 +88,49 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
                     print("failed to extract output from model")
                     return
                 }
+                let channels = probs.shape[0].intValue
+                let height = probs.shape[1].intValue
+                let width = probs.shape[2].intValue
+                                
+                let filter = MPSNNReduceFeatureChannelsArgumentMax(device: self.device)
+                let desc = MPSImageDescriptor(channelFormat: .float32,
+                                              width: width,
+                                              height: height,
+                                              featureChannels: channels)
+                let mps_image = MPSImage(device: self.device, imageDescriptor: desc)
+                mps_image.writeBytes(probs.dataPointer,
+                                     dataLayout: .featureChannelsxHeightxWidth,
+                                     imageIndex: 0)
+                
+//                var featureChannelInfo = MPSImageReadWriteParams()
+//                featureChannelInfo.numberOfFeatureChannelsToReadWrite = 12
+//                let region = MTLRegion(origin: MTLOrigin(x: 0, y: 0, z: 0), size: MTLSize(width: width, height: height, depth: 1))
+//                mps_image.readBytes(probs.dataPointer,
+//                                    dataLayout: .featureChannelsxHeightxWidth,
+//                                    bytesPerRow: width * channels * MemoryLayout<Double>.size,
+//                                    region: region,
+//                                    featureChannelInfo: featureChannelInfo,
+//                                    imageIndex: 0)
+                
+
+//                let buffer = self.device.makeCommandQueue()?.makeCommandBuffer()
+//                let classes = filter.encode(commandBuffer: buffer!, sourceImage: mps_image)
+//                let desc1 = MPSImageDescriptor(channelFormat: .unorm8, width: width, height: height, featureChannels: 1)
+//                let classes = MPSImage(device: self.device, imageDescriptor: desc1)
+//                filter.encode(commandBuffer: buffer!, sourceImage: mps_image, destinationImage: classes)
+//                print(classes.width)
+//                print(classes.height)
+//                print(classes.featureChannels)
+//                print()
+//                // set the read count to zero to release the memory
+//                if let _classes = classes as? MPSTemporaryImage { _classes.readCount = 0 }
+                let argmax = try! MLMultiArray(shape: [12, probs.shape[1], probs.shape[2]], dataType: .float32)
+                mps_image.readBytes(argmax.dataPointer,
+                                    dataLayout: .featureChannelsxHeightxWidth,
+                                    imageIndex: 0)
+
                 // unmap the discrete segmentation to RGB pixels
-                let image = probsToImage(probs)
+                let image = probsToImage(argmax)
                 // update the image on the UI thread
                 DispatchQueue.main.async {
                     self.segmentation.image = image
