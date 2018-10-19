@@ -8,8 +8,17 @@ the model.
 [sem-seg]: https://github.com/Kautenja/neural-semantic-segmentation
 
 <p align="center">
-  Predictions from Tiramisu 45 on iPhone XS Camera Video Stream.
-  <img alt="Segmentation Demonstration" src="img/example.png" width="100%" />
+<strong>Predictions from Tiramisu 45 on iPhone XS Video Stream.</strong>
+<table>
+    <tr>
+        <td>
+            <img alt="Segmentation Demonstration" src="img/example.png" width="100%" />
+        </td>
+        <td>
+            <img alt="Color Legend" src="img/cmap.png" width="100%" />
+        </td>
+    </tr>
+</table>
 </p>
 
 -   note that the 1280 × 720 input image is scaled (fill) to 480 × 352,
@@ -29,11 +38,11 @@ the model.
 The original Keras model file can be found in [Tiramisu/Models][models] as
 [Tiramisu45.h5][model-h5]. An accompanying python file, [convert.py][convert],
 handles the conversion from the Keras model into a CoreML model as
-[Tiramisu45.mlmodel][model-mlmodel] using [coremltools][coremltools]. The 
-model is trained first on CamVid, then on CityScapes using similar 
+[Tiramisu45.mlmodel][model-mlmodel] using [coremltools][coremltools]. The
+model is trained first on CamVid, then on CityScapes using similar
 hyperparameters as reported in the original paper. Additional augmentation
-is performed (brightness adjustment, random rotations) during training to 
-promote a model that is robust against variations in lighting and angle 
+is performed (brightness adjustment, random rotations) during training to
+promote a model that is robust against variations in lighting and angle
 from the camera.
 
 [models]: ./Tiramisu/Models
