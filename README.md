@@ -1,4 +1,4 @@
-# semantic-segmentation-ios
+# iOS Semantic Segmentation
 
 An example of semantic segmentation on iOS using CoreML and Keras. Trained
 Tiramisu 45 weights come from [here][sem-seg]. A device with a camera is
